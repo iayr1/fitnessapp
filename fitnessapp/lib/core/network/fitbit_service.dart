@@ -1,17 +1,18 @@
 import 'package:dio/dio.dart';
+import 'package:fitnessapp/core/network/api.dart';
 
 class FitbitService {
   final Dio _dio = Dio();
 
-  Future<void> getFitbitData(String accessToken) async {
+  Future<Response> getFitbitProfileData(String accessToken) async {
     final response = await _dio.get(
-      'https://api.fitbit.com/1/user/-/profile.json',
+      ApiString.fitbitProfile,
       options: Options(
         headers: {
           'Authorization': 'Bearer $accessToken',
         },
       ),
     );
-    print(response.data);
+    return response;
   }
 }

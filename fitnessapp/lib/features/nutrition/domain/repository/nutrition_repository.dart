@@ -1,19 +1,27 @@
 import 'package:dio/dio.dart';
+import 'package:fitnessapp/core/network/api.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class NutritionRepository {
   final Dio _dio = Dio();
+  
+  // Load the environment variables
+  String nutritionixAppId = dotenv.env['NUTRITIONIX_APP_ID'] ?? '';
+  String nutritionixApiKey = dotenv.env['NUTRITIONIX_API_KEY'] ?? '';
 
-  Future<void> getNutritionData(String foodItem) async {
+  Future<Response> getNutritionData(String query) async {
     final response = await _dio.get(
-      'https://trackapi.nutritionix.com/v2/natural/nutrients',
-      queryParameters: {'query': foodItem},
+      ApiString.nutritionixSearch,
+      queryParameters: {
+        'query': query,
+      },
       options: Options(
         headers: {
-          'x-app-id': 'YOUR_APP_ID',
-          'x-app-key': 'YOUR_APP_KEY',
+          'x-app-id': nutritionixAppId,
+          'x-app-key': nutritionixApiKey,
         },
       ),
     );
-    print(response.data);
+    return response;
   }
 }

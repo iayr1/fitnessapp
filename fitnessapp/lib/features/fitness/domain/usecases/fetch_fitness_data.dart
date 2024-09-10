@@ -1,6 +1,5 @@
 import 'package:fitnessapp/features/fitness/domain/entities/fitness_metrics.dart';
 
-
 class FetchFitnessData {
   Future<FitnessData> call() async {
     // Simulate fetching fitness data

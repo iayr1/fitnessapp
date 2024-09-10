@@ -1,24 +1,27 @@
-import 'package:bloc/bloc.dart';
+import 'package:fitnessapp/features/authentication/domain/repository/authentication_repository.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthCubit extends Cubit<User?> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final AuthRepository _authRepository = AuthRepository();
 
   AuthCubit() : super(null) {
-    _auth.authStateChanges().listen((user) {
+    FirebaseAuth.instance.authStateChanges().listen((user) {
       emit(user);
     });
   }
 
   Future<void> signInWithGoogle() async {
     try {
-      // Add Google sign-in logic here
+      User? user = await _authRepository.signInWithGoogle();
+      emit(user);
     } catch (e) {
-      print(e);
+      print('Error signing in: $e');
     }
   }
 
   Future<void> signOut() async {
-    await _auth.signOut();
+    await _authRepository.signOut();
+    emit(null);
   }
 }
